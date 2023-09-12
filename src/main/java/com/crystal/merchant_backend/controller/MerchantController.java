@@ -16,7 +16,6 @@ import com.crystal.merchant_backend.service.MainService;
 
 @RestController
 @RequestMapping("/v1")
-@CrossOrigin
 public class MerchantController {
 
     @Autowired
