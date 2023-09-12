@@ -27,7 +27,7 @@ public class MerchantController {
             return new ResponseEntity<Merchant>(mainService.getMerchantDetails(merchantId), HttpStatus.OK);
         }
         else{
-            return new ResponseEntity<String>("{'msg':'Merchant ID cannot be empty'}", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>("{\"msg\":\"Merchant ID cannot be empty\"}", HttpStatus.BAD_REQUEST);
         }
     }
 

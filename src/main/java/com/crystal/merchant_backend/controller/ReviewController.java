@@ -32,9 +32,9 @@ public class ReviewController {
         reviewDetails.setImageUrl(amazonFile);
 
         if (mainService.createReview(reviewDetails)) {
-            return new ResponseEntity<String>("{'msg':'Successful'}", HttpStatus.OK);
+            return new ResponseEntity<String>("{\"msg\":\"Successful\"}", HttpStatus.OK);
         }
-        return new ResponseEntity<String>("{'msg':'Error Creating'}", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<String>("{\"msg\":\"Error Creating\"}", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @GetMapping("/merchant/{id}")
@@ -45,9 +45,9 @@ public class ReviewController {
     @DeleteMapping("{id}")
     public ResponseEntity<String> deleteReview(@PathVariable("id") int reviewId) {
         if (mainService.deleteReview(reviewId)) {
-            return new ResponseEntity<String>("{'msg':'Successful'}", HttpStatus.OK);
+            return new ResponseEntity<String>("{\"msg\":\"Successful\"}", HttpStatus.OK);
         }
-        return new ResponseEntity<String>("{'msg':'Error Deleting'}", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<String>("{\"msg\":\"Error Deleting\"}", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @GetMapping("{id}")

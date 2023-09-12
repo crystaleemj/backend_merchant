@@ -29,7 +29,7 @@ public class UserController {
             return new ResponseEntity<User>(mainService.getUserById(userDetailRequest.getUserId()), HttpStatus.OK);
         }
         else{
-            return new ResponseEntity<String>("{'msg':'User ID cannot be empty'}", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>("{\"msg\":\"User ID cannot be empty\"}", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -39,7 +39,7 @@ public class UserController {
             return new ResponseEntity<User>(mainService.getUserByUsername(userDSDetailUsernameRequest.getUsername()), HttpStatus.OK);
         }
         else{
-            return new ResponseEntity<String>("{'msg':'Username cannot be empty'}", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>("{\"msg\":\"Username cannot be empty\"}", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -47,9 +47,9 @@ public class UserController {
     public ResponseEntity<String> createNewUser(@RequestBody UserCreationRequest userCreationRequest){
         if(userCreationRequest != null){
             if(mainService.createUser(userCreationRequest)){
-                return new ResponseEntity<String>("{'msg':'Successful'}", HttpStatus.OK);
+                return new ResponseEntity<String>("{\"msg\":\"Successful\"}", HttpStatus.OK);
             };
         }
-        return new ResponseEntity<String>("{'msg':'User details cannot be empty'}", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<String>("{\"msg\":\"User details cannot be empty\"}", HttpStatus.BAD_REQUEST);
     }
 }

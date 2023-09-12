@@ -18,6 +18,6 @@ public class MainController {
 
     @GetMapping("/health")
     public ResponseEntity<String> getHealth() {
-        return ResponseEntity.ok("{'msg':'Running'}");
+        return ResponseEntity.ok("{\"msg\":\"Running\"}");
     }
 }
