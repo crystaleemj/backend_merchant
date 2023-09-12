@@ -16,7 +16,7 @@ public class ReviewRepo {
     JdbcTemplate template;
 
     private final String GET_REVIEWS_BY_MERCHANTID = "SELECT * FROM reviews WHERE merchant_id=?";
-    private final String GET_REVIEW_BY_ID = "SELECT * FROM reviews WHERE id=?";
+    private final String GET_REVIEW_BY_ID = "SELECT * FROM reviews WHERE review_id=?";
     private final String GET_REVIEWS_BY_USERID = "SELECT * FROM reviews WHERE user_id=?";
     private final String CREATE_REVIEW_SQL = "INSERT into reviews(user_id, merchant_id, rating, feedback, image_url) VALUES (?,?,?,?,?)";
     private final String UPDATE_REVIEW_SQL = "UPDATE reviews SET rating = ?, feedback = ?, image_url = ? WHERE review_id = ?";
