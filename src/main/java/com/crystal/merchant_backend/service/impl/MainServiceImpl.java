@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.crystal.merchant_backend.dto.CreateMerchantRequest;
+import com.crystal.merchant_backend.dto.UserConfirmPassword;
 import com.crystal.merchant_backend.dto.UserCreationRequest;
 import com.crystal.merchant_backend.entity.Merchant;
 import com.crystal.merchant_backend.entity.Review;
@@ -73,8 +74,18 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public Boolean createMerchant(CreateMerchantRequest merchant) {
+    public boolean createMerchant(CreateMerchantRequest merchant) {
         return merchantRepo.insertMerchant(merchant);
+    }
+
+    @Override
+    public void forgotPassword(String username) {
+        userRepo.forgotPassword(username);
+    }
+
+    @Override
+    public void confirmReset(UserConfirmPassword userConfirmPassword) {
+        userRepo.confirmPassword(userConfirmPassword);
     }
 
 }

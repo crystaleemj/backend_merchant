@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.crystal.merchant_backend.dto.CreateMerchantRequest;
+import com.crystal.merchant_backend.dto.UserConfirmPassword;
 import com.crystal.merchant_backend.dto.UserCreationRequest;
 import com.crystal.merchant_backend.entity.Merchant;
 import com.crystal.merchant_backend.entity.Review;
@@ -16,7 +17,7 @@ public interface MainService {
 
     List<Merchant> getAllMerchantDetails();
 
-    Boolean createMerchant(CreateMerchantRequest merchant);
+    boolean createMerchant(CreateMerchantRequest merchant);
 
     User getUserById(int id);
 
@@ -31,4 +32,8 @@ public interface MainService {
     Review getReviewById(int reviewId);
 
     boolean createUser(UserCreationRequest userCreationRequest);
+
+    void forgotPassword(String username);
+
+    void confirmReset(UserConfirmPassword userConfirmPassword);
 }

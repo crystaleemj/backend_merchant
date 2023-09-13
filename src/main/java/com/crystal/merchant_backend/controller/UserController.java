@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.crystal.merchant_backend.dto.UserConfirmPassword;
 import com.crystal.merchant_backend.dto.UserCreationRequest;
 import com.crystal.merchant_backend.dto.UserDetailRequest;
 import com.crystal.merchant_backend.dto.UserDetailUsernameRequest;
@@ -52,5 +53,27 @@ public class UserController {
             };
         }
         return new ResponseEntity<String>("{\"msg\":\"User details cannot be empty\"}", HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/reset")
+    public ResponseEntity<?> resetByUsername(@RequestBody UserDetailUsernameRequest userDSDetailUsernameRequest) {
+        if(userDSDetailUsernameRequest.getUsername() != "" && userDSDetailUsernameRequest.getUsername() != null){
+            mainService.forgotPassword(userDSDetailUsernameRequest.getUsername());
+            return new ResponseEntity<String>("{\"msg\":\"Successful\"}", HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<String>("{\"msg\":\"Username cannot be empty\"}", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/reset/confirm")
+    public ResponseEntity<?> confirmResetByUsername(@RequestBody UserConfirmPassword userConfirmPassword) {
+        if(userConfirmPassword.getPassword() != "" && userConfirmPassword.getPassword() != null){
+            mainService.confirmReset(userConfirmPassword);
+            return new ResponseEntity<String>("{\"msg\":\"Successful\"}", HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<String>("{\"msg\":\"Username cannot be empty\"}", HttpStatus.BAD_REQUEST);
+        }
     }
 }
