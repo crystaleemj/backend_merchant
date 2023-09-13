@@ -32,6 +32,7 @@ public class ReviewController {
 
     @PutMapping(value="/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createReview(@RequestPart("reviewDetails") String reviewDetailsStr, @RequestPart MultipartFile image) throws JsonMappingException, JsonProcessingException {
+        
         ObjectMapper objectMapper = new ObjectMapper();
         CreateReviewRequest reviewDetails = objectMapper.readValue(reviewDetailsStr, CreateReviewRequest.class);
 
@@ -41,6 +42,7 @@ public class ReviewController {
         review.setRating(reviewDetails.getRating());
         review.setReviewId(0);
         review.setUserId(reviewDetails.getUserId());
+        
         // Insert into S3 and retrieve URL of file
         String amazonFile = "honto";
         review.setImageUrl(amazonFile);
