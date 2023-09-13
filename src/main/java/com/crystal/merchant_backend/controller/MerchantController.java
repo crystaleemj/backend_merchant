@@ -8,9 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.crystal.merchant_backend.dto.CreateMerchantRequest;
 import com.crystal.merchant_backend.entity.Merchant;
 import com.crystal.merchant_backend.service.MainService;
 
@@ -34,5 +37,13 @@ public class MerchantController {
     @GetMapping("/merchant")
     public ResponseEntity<List<Merchant>> getAllMerchantDetails() {
         return ResponseEntity.ok(mainService.getAllMerchantDetails());
+    }
+
+    @PutMapping("/merchant/create")
+    public ResponseEntity<String> createMerchantDetails(@RequestBody CreateMerchantRequest merchant){
+        if(mainService.createMerchant(merchant)){
+            return new ResponseEntity<String>("{\"msg\":\"Successful\"}", HttpStatus.OK);
+        }
+        return new ResponseEntity<String>("{\"msg\":\"Error in creating merchant\"}", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

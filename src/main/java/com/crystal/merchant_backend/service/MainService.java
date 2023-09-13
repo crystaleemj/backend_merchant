@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.crystal.merchant_backend.dto.CreateMerchantRequest;
 import com.crystal.merchant_backend.dto.UserCreationRequest;
 import com.crystal.merchant_backend.entity.Merchant;
 import com.crystal.merchant_backend.entity.Review;
@@ -14,6 +15,8 @@ public interface MainService {
     Merchant getMerchantDetails(String merchantId);
 
     List<Merchant> getAllMerchantDetails();
+
+    Boolean createMerchant(CreateMerchantRequest merchant);
 
     User getUserById(int id);
 

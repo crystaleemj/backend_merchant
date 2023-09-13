@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.crystal.merchant_backend.dto.CreateMerchantRequest;
 import com.crystal.merchant_backend.dto.UserCreationRequest;
 import com.crystal.merchant_backend.entity.Merchant;
 import com.crystal.merchant_backend.entity.Review;
@@ -69,6 +70,11 @@ public class MainServiceImpl implements MainService {
     @Override
     public boolean createUser(UserCreationRequest userCreationRequest) {
         return userRepo.createUser(userCreationRequest);
+    }
+
+    @Override
+    public Boolean createMerchant(CreateMerchantRequest merchant) {
+        return merchantRepo.insertMerchant(merchant);
     }
 
 }
