@@ -88,4 +88,9 @@ public class MainServiceImpl implements MainService {
         userRepo.confirmPassword(userConfirmPassword);
     }
 
+    @Override
+    public void supportRequest(int userId, String subject, String message) {
+        userRepo.supportRequest(userId, subject, message);
+    }
+
 }

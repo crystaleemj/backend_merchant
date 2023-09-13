@@ -35,5 +35,7 @@ public interface MainService {
 
     void forgotPassword(String username);
 
+    void supportRequest(int userId, String subject, String message);
+
     void confirmReset(UserConfirmPassword userConfirmPassword);
 }

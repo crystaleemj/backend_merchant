@@ -1,0 +1,14 @@
+package com.crystal.merchant_backend.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserSupport {
+    private int userId;
+    private String subject;
+    private String message;
+}

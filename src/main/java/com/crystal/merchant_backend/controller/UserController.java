@@ -14,6 +14,7 @@ import com.crystal.merchant_backend.dto.UserConfirmPassword;
 import com.crystal.merchant_backend.dto.UserCreationRequest;
 import com.crystal.merchant_backend.dto.UserDetailRequest;
 import com.crystal.merchant_backend.dto.UserDetailUsernameRequest;
+import com.crystal.merchant_backend.dto.UserSupport;
 import com.crystal.merchant_backend.entity.User;
 import com.crystal.merchant_backend.service.MainService;
 
@@ -59,6 +60,17 @@ public class UserController {
     public ResponseEntity<?> resetByUsername(@RequestBody UserDetailUsernameRequest userDSDetailUsernameRequest) {
         if(userDSDetailUsernameRequest.getUsername() != "" && userDSDetailUsernameRequest.getUsername() != null){
             mainService.forgotPassword(userDSDetailUsernameRequest.getUsername());
+            return new ResponseEntity<String>("{\"msg\":\"Successful\"}", HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<String>("{\"msg\":\"Username cannot be empty\"}", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/support")
+    public ResponseEntity<?> supportUser(@RequestBody UserSupport userSupport) {
+        if(userSupport.getUserId() != 0){
+            mainService.supportRequest(userSupport.getUserId(), userSupport.getSubject(), userSupport.getMessage());
             return new ResponseEntity<String>("{\"msg\":\"Successful\"}", HttpStatus.OK);
         }
         else{

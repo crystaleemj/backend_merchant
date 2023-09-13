@@ -83,6 +83,26 @@ public class UserRepo {
         }
     }
 
+    public void supportRequest(int userId, String subject, String message) {
+        try {
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setFrom("donotreply.merchantrecovery@gmail.com");
+            mailMessage.setTo("donotreply.merchantrecovery@gmail.com");
+            mailMessage.setText("A support request has been raised\n\nUser ID:" + userId+"\nMessage:"+message);
+            mailMessage.setSubject("Support Ticket: "+subject);
+
+            // Sending the mail
+            javaMailSender.send(mailMessage);
+            log.info("Support ticket for " + userId);
+        }
+
+        // Catch block to handle the exceptions
+        catch (Exception e) {
+            log.error("Error sending email");
+            e.printStackTrace();
+        }
+    }
+
     public void confirmPassword(UserConfirmPassword userConfirmPassword) {
         template.update(CONFIRM_USER_SQL, userConfirmPassword.getPassword(), userConfirmPassword.getUserId());
     }
