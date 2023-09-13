@@ -16,7 +16,7 @@ import com.crystal.merchant_backend.service.MainService;
 
 @RestController
 @RequestMapping("/v1")
-@CrossOrigin
+@CrossOrigin()
 public class MerchantController {
 
     @Autowired
@@ -24,10 +24,9 @@ public class MerchantController {
 
     @GetMapping("/merchant/{id}")
     public ResponseEntity<?> getMerchantDetails(@PathVariable("id") String merchantId) {
-        if(merchantId != null && merchantId != ""){
+        if (merchantId != null && merchantId != "") {
             return new ResponseEntity<Merchant>(mainService.getMerchantDetails(merchantId), HttpStatus.OK);
-        }
-        else{
+        } else {
             return new ResponseEntity<String>("{\"msg\":\"Merchant ID cannot be empty\"}", HttpStatus.BAD_REQUEST);
         }
     }

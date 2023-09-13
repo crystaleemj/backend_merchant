@@ -16,23 +16,36 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.crystal.merchant_backend.dto.CreateReviewRequest;
 import com.crystal.merchant_backend.entity.Review;
 import com.crystal.merchant_backend.service.MainService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping("/v1/review")
-@CrossOrigin
+@CrossOrigin()
 public class ReviewController {
     @Autowired
     MainService mainService;
 
     @PutMapping(value="/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> createReview(@RequestPart Review reviewDetails, @RequestPart MultipartFile image) {
+    public ResponseEntity<String> createReview(@RequestPart("reviewDetails") String reviewDetailsStr, @RequestPart MultipartFile image) throws JsonMappingException, JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        CreateReviewRequest reviewDetails = objectMapper.readValue(reviewDetailsStr, CreateReviewRequest.class);
+
+        Review review = new Review();
+        review.setFeedback(reviewDetails.getFeedback());
+        review.setMerchantId(reviewDetails.getMerchantId());
+        review.setRating(reviewDetails.getRating());
+        review.setReviewId(0);
+        review.setUserId(reviewDetails.getUserId());
         // Insert into S3 and retrieve URL of file
         String amazonFile = "honto";
-        reviewDetails.setImageUrl(amazonFile);
+        review.setImageUrl(amazonFile);
 
-        if (mainService.createReview(reviewDetails)) {
+        if (mainService.createReview(review)) {
             return new ResponseEntity<String>("{\"msg\":\"Successful\"}", HttpStatus.OK);
         }
         return new ResponseEntity<String>("{\"msg\":\"Error Creating\"}", HttpStatus.INTERNAL_SERVER_ERROR);
