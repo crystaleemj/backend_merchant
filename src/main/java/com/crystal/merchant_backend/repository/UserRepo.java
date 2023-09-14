@@ -64,13 +64,14 @@ public class UserRepo {
     public void forgotPassword(String username) {
         User userData = findUserByUsername(username);
         try {
-            String generatedPass = hashWithSHA512(generatePass(5));
+            String pass = generatePass(5);
+            String generatedPass = hashWithSHA512(pass);
             Integer result = updatePassword(generatedPass, userData.getUser_id());
             if (result > 0) {
                 SimpleMailMessage mailMessage = new SimpleMailMessage();
                 mailMessage.setFrom("hyperx66@outlook.com");
                 mailMessage.setTo(userData.getEmail());
-                mailMessage.setText("Here is your recovery password:\n" + generatedPass);
+                mailMessage.setText("Here is your recovery password:\n" + pass);
                 mailMessage.setSubject("Recovery password for: " + username);
 
                 // Sending the mail
