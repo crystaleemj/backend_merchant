@@ -1,4 +1,5 @@
 /Users/crystalee/Desktop/backend_merchant/src/main/java/com/crystal/merchant_backend/dto/CreateMerchantRequest.java
+/Users/crystalee/Desktop/backend_merchant/src/main/java/com/crystal/merchant_backend/dto/UserAuthRequest.java
 /Users/crystalee/Desktop/backend_merchant/src/main/java/com/crystal/merchant_backend/dto/CreateReviewRequest.java
 /Users/crystalee/Desktop/backend_merchant/src/main/java/com/crystal/merchant_backend/controller/ReviewController.java
 /Users/crystalee/Desktop/backend_merchant/src/main/java/com/crystal/merchant_backend/dto/UserDetailRequest.java
@@ -14,6 +15,7 @@
 /Users/crystalee/Desktop/backend_merchant/src/main/java/com/crystal/merchant_backend/repository/MerchantRepo.java
 /Users/crystalee/Desktop/backend_merchant/src/main/java/com/crystal/merchant_backend/controller/UserController.java
 /Users/crystalee/Desktop/backend_merchant/src/main/java/com/crystal/merchant_backend/entity/Merchant.java
+/Users/crystalee/Desktop/backend_merchant/src/main/java/com/crystal/merchant_backend/entity/UserAuth.java
 /Users/crystalee/Desktop/backend_merchant/src/main/java/com/crystal/merchant_backend/service/MainService.java
 /Users/crystalee/Desktop/backend_merchant/src/main/java/com/crystal/merchant_backend/controller/MainController.java
 /Users/crystalee/Desktop/backend_merchant/src/main/java/com/crystal/merchant_backend/entity/User.java
