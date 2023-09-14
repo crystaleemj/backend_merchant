@@ -1,6 +1,9 @@
 package com.crystal.merchant_backend.controller;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,9 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.crystal.merchant_backend.dto.CreateReviewRequest;
 import com.crystal.merchant_backend.entity.Review;
+import com.crystal.merchant_backend.repository.ImageRepo;
 import com.crystal.merchant_backend.service.MainService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
@@ -29,9 +31,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class ReviewController {
     @Autowired
     MainService mainService;
+    @Autowired
+    ImageRepo imgRepo;
 
     @PutMapping(value="/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> createReview(@RequestPart("reviewDetails") String reviewDetailsStr, @RequestPart MultipartFile image) throws JsonMappingException, JsonProcessingException {
+    public ResponseEntity<String> createReview(@RequestPart("reviewDetails") String reviewDetailsStr, @RequestPart MultipartFile image) throws IOException {
         
         ObjectMapper objectMapper = new ObjectMapper();
         CreateReviewRequest reviewDetails = objectMapper.readValue(reviewDetailsStr, CreateReviewRequest.class);
@@ -44,8 +48,10 @@ public class ReviewController {
         review.setUserId(reviewDetails.getUserId());
         
         // Insert into S3 and retrieve URL of file
-        String amazonFile = "honto";
-        review.setImageUrl(amazonFile);
+        String uuidS3 = UUID.randomUUID().toString().substring(0,8);
+        imgRepo.uploadFile(image, uuidS3);
+        String imgURL = "https://ceemj.sgp1.digitaloceanspaces.com/" + uuidS3;
+        review.setImageUrl(imgURL);
 
         if (mainService.createReview(review)) {
             return new ResponseEntity<String>("{\"msg\":\"Successful\"}", HttpStatus.OK);
