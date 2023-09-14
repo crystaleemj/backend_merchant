@@ -1,10 +1,13 @@
 package com.crystal.merchant_backend.service;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.crystal.merchant_backend.dto.CreateMerchantRequest;
+import com.crystal.merchant_backend.dto.UserAuthRequest;
 import com.crystal.merchant_backend.dto.UserConfirmPassword;
 import com.crystal.merchant_backend.dto.UserCreationRequest;
 import com.crystal.merchant_backend.entity.Merchant;
@@ -31,11 +34,13 @@ public interface MainService {
 
     Review getReviewById(int reviewId);
 
-    boolean createUser(UserCreationRequest userCreationRequest);
+    boolean createUser(UserCreationRequest userCreationRequest) throws NoSuchAlgorithmException, InvalidKeySpecException;
 
     void forgotPassword(String username);
 
     void supportRequest(int userId, String subject, String message);
 
     void confirmReset(UserConfirmPassword userConfirmPassword);
+
+    User authenticate(UserAuthRequest userAuthRequest) throws NoSuchAlgorithmException, InvalidKeySpecException;
 }

@@ -1,5 +1,9 @@
 package com.crystal.merchant_backend.repository;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import org.apache.commons.codec.digest.Sha2Crypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -7,6 +11,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Repository;
 
+import com.crystal.merchant_backend.dto.UserAuthRequest;
 import com.crystal.merchant_backend.dto.UserConfirmPassword;
 import com.crystal.merchant_backend.dto.UserCreationRequest;
 import com.crystal.merchant_backend.entity.User;
@@ -41,8 +46,9 @@ public class UserRepo {
     }
 
     // create new user
-    public Boolean createUser(UserCreationRequest user) {
-        Integer result = template.update(CREATE_USER_SQL, user.getUsername(), user.getPassword(), user.getEmail());
+    public Boolean createUser(UserCreationRequest user) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        String base64Hash = hashWithSHA512(user.getPassword());
+        Integer result = template.update(CREATE_USER_SQL, user.getUsername(), base64Hash, user.getEmail());
         return result > 0 ? true : false;
     }
 
@@ -88,8 +94,8 @@ public class UserRepo {
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setFrom("donotreply.merchantrecovery@gmail.com");
             mailMessage.setTo("donotreply.merchantrecovery@gmail.com");
-            mailMessage.setText("A support request has been raised\n\nUser ID:" + userId+"\nMessage:"+message);
-            mailMessage.setSubject("Support Ticket: "+subject);
+            mailMessage.setText("A support request has been raised\n\nUser ID:" + userId + "\nMessage:" + message);
+            mailMessage.setSubject("Support Ticket: " + subject);
 
             // Sending the mail
             javaMailSender.send(mailMessage);
@@ -106,6 +112,34 @@ public class UserRepo {
     public void confirmPassword(UserConfirmPassword userConfirmPassword) {
         template.update(CONFIRM_USER_SQL, userConfirmPassword.getPassword(), userConfirmPassword.getUserId());
     }
+
+    public User authenticate(UserAuthRequest userAuthRequest) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        User user = template.queryForObject(FIND_USER_BY_USERNAME, BeanPropertyRowMapper.newInstance(User.class),
+                userAuthRequest.getUsername());
+
+        String base64Hash = hashWithSHA512(userAuthRequest.getPassword());
+        if (user.getPassword().equals(base64Hash)) {
+            return user;
+        } else {
+            return null;
+        }
+    }
+
+    private String hashWithSHA512(String input) {
+        StringBuilder result = new StringBuilder();
+        try {
+          MessageDigest md = MessageDigest.getInstance("SHA-512");
+          md.update("salt".getBytes());
+    
+          byte [] digested = md.digest(input.getBytes());
+          for (int i = 0; i < digested.length; i++) {
+            result.append(Integer.toHexString(0xFF & digested[i]));
+          }
+        } catch (NoSuchAlgorithmException e) {
+          throw new RuntimeException("Bad algorithm");
+        }
+        return result.toString();
+      }
 
     private String generatePass(int length) {
         String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvxyz";

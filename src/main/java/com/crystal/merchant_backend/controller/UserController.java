@@ -1,5 +1,8 @@
 package com.crystal.merchant_backend.controller;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.crystal.merchant_backend.dto.UserAuthRequest;
 import com.crystal.merchant_backend.dto.UserConfirmPassword;
 import com.crystal.merchant_backend.dto.UserCreationRequest;
 import com.crystal.merchant_backend.dto.UserDetailRequest;
@@ -36,18 +40,18 @@ public class UserController {
         }
     }
 
-    @PostMapping("/find/username")
-    public ResponseEntity<?> getUserDetailsByUsername(@RequestBody UserDetailUsernameRequest userDSDetailUsernameRequest) {
-        if(userDSDetailUsernameRequest.getUsername() != "" && userDSDetailUsernameRequest.getUsername() != null){
-            return new ResponseEntity<User>(mainService.getUserByUsername(userDSDetailUsernameRequest.getUsername()), HttpStatus.OK);
+    @PostMapping("/login")
+    public ResponseEntity<?> getUserDetailsByUsername(@RequestBody UserAuthRequest userAuthRequest) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        if(userAuthRequest.getUsername() != "" && userAuthRequest.getUsername() != null && userAuthRequest.getPassword() != "" && userAuthRequest.getPassword() != null){
+            return new ResponseEntity<User>(mainService.authenticate(userAuthRequest), HttpStatus.OK);
         }
         else{
-            return new ResponseEntity<String>("{\"msg\":\"Username cannot be empty\"}", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>("{\"msg\":\"User data cannot be empty\"}", HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping("/create")
-    public ResponseEntity<String> createNewUser(@RequestBody UserCreationRequest userCreationRequest){
+    public ResponseEntity<String> createNewUser(@RequestBody UserCreationRequest userCreationRequest) throws NoSuchAlgorithmException, InvalidKeySpecException{
         if(userCreationRequest != null){
             if(mainService.createUser(userCreationRequest)){
                 return new ResponseEntity<String>("{\"msg\":\"Successful\"}", HttpStatus.OK);

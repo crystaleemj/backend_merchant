@@ -1,11 +1,14 @@
 package com.crystal.merchant_backend.service.impl;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.crystal.merchant_backend.dto.CreateMerchantRequest;
+import com.crystal.merchant_backend.dto.UserAuthRequest;
 import com.crystal.merchant_backend.dto.UserConfirmPassword;
 import com.crystal.merchant_backend.dto.UserCreationRequest;
 import com.crystal.merchant_backend.entity.Merchant;
@@ -69,7 +72,7 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public boolean createUser(UserCreationRequest userCreationRequest) {
+    public boolean createUser(UserCreationRequest userCreationRequest) throws NoSuchAlgorithmException, InvalidKeySpecException {
         return userRepo.createUser(userCreationRequest);
     }
 
@@ -91,6 +94,11 @@ public class MainServiceImpl implements MainService {
     @Override
     public void supportRequest(int userId, String subject, String message) {
         userRepo.supportRequest(userId, subject, message);
+    }
+
+    @Override
+    public User authenticate(UserAuthRequest userAuthRequest) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        return userRepo.authenticate(userAuthRequest);
     }
 
 }
