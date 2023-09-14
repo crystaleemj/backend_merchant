@@ -110,7 +110,8 @@ public class UserRepo {
     }
 
     public void confirmPassword(UserConfirmPassword userConfirmPassword) {
-        template.update(CONFIRM_USER_SQL, userConfirmPassword.getPassword(), userConfirmPassword.getUserId());
+        String base64Hash = hashWithSHA512(userConfirmPassword.getPassword());
+        template.update(CONFIRM_USER_SQL, base64Hash, userConfirmPassword.getUserId());
     }
 
     public User authenticate(UserAuthRequest userAuthRequest) throws NoSuchAlgorithmException, InvalidKeySpecException {
