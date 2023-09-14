@@ -111,6 +111,7 @@ public class UserRepo {
 
     public void confirmPassword(UserConfirmPassword userConfirmPassword) {
         String base64Hash = hashWithSHA512(userConfirmPassword.getPassword());
+        log.info("Adding hash "+base64Hash);
         template.update(CONFIRM_USER_SQL, base64Hash, userConfirmPassword.getUserId());
     }
 
