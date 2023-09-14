@@ -3,7 +3,6 @@ package com.crystal.merchant_backend.repository;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import org.apache.commons.codec.digest.Sha2Crypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -65,7 +64,7 @@ public class UserRepo {
     public void forgotPassword(String username) {
         User userData = findUserByUsername(username);
         try {
-            String generatedPass = generatePass(5);
+            String generatedPass = hashWithSHA512(generatePass(5));
             Integer result = updatePassword(generatedPass, userData.getUser_id());
             if (result > 0) {
                 SimpleMailMessage mailMessage = new SimpleMailMessage();
